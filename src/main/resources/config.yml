@@ -1,0 +1,36 @@
+shield:
+  decay-interval: 1
+  side-length: 100
+  min-y: 70
+  max-y: 200
+reactor:
+  hopper:
+    x: 0
+    y: 70
+    z: 0
+
+  initial-fuel: 100
+  initial-coolant: 100
+
+  # per second
+  fuel-consumption: 1
+  coolant-consumption: 1
+
+  tnt:
+    fill-min:
+      x: -50
+      y: 65
+      z: -50
+    fill-max:
+      x: 50
+      y: 68
+      z: 50
+    primed:
+      x: 0
+      y: 68
+      z: 0
+lapis-spawning:
+  interval: 20
+  radius: 50
+  min-y: 5
+  max-y: 30
