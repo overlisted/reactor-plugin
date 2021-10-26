@@ -38,11 +38,14 @@ public class Reactor extends BukkitRunnable {
                 hopper_pos.getInt("z")
         );
 
-        if(block.getState() instanceof Hopper hopper) {
-            this.hopper = hopper;
-        } else {
-            throw new IllegalArgumentException("Block is not a hopper");
+        if(!(block.getState() instanceof Hopper)) {
+            block.setType(Material.HOPPER);
+
+            var coords = "(" + hopper_pos.getInt("x") + ", " + hopper_pos.getInt("y") + ", " + hopper_pos.getInt("z") + ")";
+            ReactorPlugin.INSTANCE.getLogger().warning("Changed the block at " + coords + " to a hopper");
         }
+
+        this.hopper = (Hopper) block.getState();
 
         this.fuel = config.getInt("initial-fuel");
         this.coolant = config.getInt("initial-coolant");
