@@ -34,9 +34,5 @@ public class LapisSpawner extends BukkitRunnable {
         if(block.getType() == Material.STONE) {
             loc.getBlock().setType(Material.LAPIS_ORE);
         }
-
-        if(block.getType() == Material.DEEPSLATE) {
-            loc.getBlock().setType(Material.DEEPSLATE_LAPIS_ORE);
-        }
     }
 }

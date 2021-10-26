@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    api 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
+    api 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
 }
 
 def targetJavaVersion = 16
