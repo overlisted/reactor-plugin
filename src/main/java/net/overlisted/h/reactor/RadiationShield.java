@@ -1,10 +1,8 @@
 package net.overlisted.h.reactor;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Color;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
@@ -141,15 +139,14 @@ public class RadiationShield extends BukkitRunnable implements Listener {
                     .getOnlinePlayers()
                     .forEach(it -> it.addPotionEffect(poison));
 
-            var component = Component.text(
-                    "Nothing is protecting you from radiation",
-                    Style.style().color(TextColor.color(Color.RED.asRGB())).decorate(TextDecoration.BOLD).build()
+            var component = TextComponent.fromLegacyText(
+                    "\u00A74Nothing is protecting you from radiation"
             );
 
             ReactorPlugin.INSTANCE
                     .getServer()
                     .getOnlinePlayers()
-                    .forEach(it -> it.sendActionBar(component));
+                    .forEach(it -> it.spigot().sendMessage(ChatMessageType.ACTION_BAR, component));
         } else if(frac < 0.5) {
             var poison = new PotionEffect(PotionEffectType.POISON, 2, 2);
 
@@ -158,15 +155,14 @@ public class RadiationShield extends BukkitRunnable implements Listener {
                     .getOnlinePlayers()
                     .forEach(it -> it.addPotionEffect(poison));
 
-            var component = Component.text(
-                    "The radiation shield is getting very weak",
-                    Style.style().color(TextColor.color(Color.YELLOW.asRGB())).build()
+            var component = TextComponent.fromLegacyText(
+                    "\u00A7eThe radiation shield is getting very weak"
             );
 
             ReactorPlugin.INSTANCE
                     .getServer()
                     .getOnlinePlayers()
-                    .forEach(it -> it.sendActionBar(component));
+                    .forEach(it -> it.spigot().sendMessage(ChatMessageType.ACTION_BAR, component));
         }
 
         if(this.decay) {

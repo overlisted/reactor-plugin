@@ -1,6 +1,5 @@
 package net.overlisted.h.reactor;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -40,7 +39,7 @@ public final class ReactorPlugin extends JavaPlugin {
             this.scoreboard = server
                     .getScoreboardManager()
                     .getMainScoreboard()
-                    .registerNewObjective("dfgdfg", "dummy", Component.text("Reactor"));
+                    .registerNewObjective("dfgdfg", "dummy", "Reactor");
         }
 
         this.scoreboard.setDisplaySlot(DisplaySlot.SIDEBAR);

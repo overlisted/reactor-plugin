@@ -9,8 +9,8 @@ version = '1.0'
 repositories {
     mavenCentral()
     maven {
-        name = 'papermc-repo'
-        url = 'https://papermc.io/repo/repository/maven-public/'
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
     maven {
         name = 'sonatype'
@@ -19,10 +19,10 @@ repositories {
 }
 
 dependencies {
-    api 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    api 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
 }
 
-def targetJavaVersion = 16
+def targetJavaVersion = 15
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

@@ -1,11 +1,5 @@
 package net.overlisted.h.reactor;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.title.Title;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Hopper;
@@ -14,8 +8,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Score;
-
-import java.time.Duration;
 
 public class Reactor extends BukkitRunnable {
     private final ConfigurationSection config;
@@ -62,19 +54,16 @@ public class Reactor extends BukkitRunnable {
         this.consumeResources = false;
 
         var server = ReactorPlugin.INSTANCE.getServer();
-        var title = Title.title(
-                Component.text(
-                        "Reactor is about to explode!",
-                        Style.style().decorate(TextDecoration.BOLD).build()
-                ),
-                Component.text(
-                        "You have 1 minute to evacuate",
-                        Style.style().color(TextColor.color(Color.RED.asRGB())).build()
-                ),
-                Title.Times.of(Duration.ZERO, Duration.ofMinutes(1), Duration.ZERO)
-        );
 
-        server.showTitle(title);
+        server
+                .getOnlinePlayers()
+                .forEach(it -> it.sendTitle(
+                        "Reactor is about to explode!",
+                        "You have 1 minute to evacuate",
+                        10,
+                        1180,
+                        10
+                ));
 
         var task = new BukkitRunnable() {
             @Override
