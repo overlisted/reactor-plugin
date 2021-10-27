@@ -35,7 +35,7 @@ reactor:
       x: 0
       y: 68
       z: 0
-lapis-spawning:
+redstone-spawning:
   interval: 20
   center:
     x: 0,

@@ -11,7 +11,7 @@ import org.bukkit.scoreboard.Objective;
 public final class ReactorPlugin extends JavaPlugin {
     public static ReactorPlugin INSTANCE;
 
-    private LapisSpawner lapisSpawner;
+    private RedstoneSpawner redstoneSpawner;
     private RadiationShield radiationShield;
     private Reactor reactor;
 
@@ -46,7 +46,7 @@ public final class ReactorPlugin extends JavaPlugin {
 
         this.overworld = server.getWorlds().get(0);
 
-        this.lapisSpawner = new LapisSpawner();
+        this.redstoneSpawner = new RedstoneSpawner();
         this.radiationShield = new RadiationShield();
         this.reactor = new Reactor();
 
@@ -55,14 +55,14 @@ public final class ReactorPlugin extends JavaPlugin {
 
         var config = this.getConfig();
 
-        this.lapisSpawner.runTaskTimer(this, 0, config.getInt("lapis-spawning.interval"));
+        this.redstoneSpawner.runTaskTimer(this, 0, config.getInt("lapis-spawning.interval"));
         this.radiationShield.runTaskTimer(this, 0, config.getInt("shield.decay-interval"));
         this.reactor.runTaskTimer(this, 0, 20);
     }
 
     @Override
     public void onDisable() {
-        this.lapisSpawner.cancel();
+        this.redstoneSpawner.cancel();
         this.radiationShield.cancel();
         this.reactor.cancel();
     }

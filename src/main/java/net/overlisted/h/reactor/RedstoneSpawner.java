@@ -7,13 +7,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Random;
 
-public class LapisSpawner extends BukkitRunnable {
+public class RedstoneSpawner extends BukkitRunnable {
     private final ConfigurationSection config;
 
     Random random = new Random();
 
-    public LapisSpawner() {
-        this.config = ReactorPlugin.INSTANCE.getConfig().getConfigurationSection("lapis-spawning");
+    public RedstoneSpawner() {
+        this.config = ReactorPlugin.INSTANCE.getConfig().getConfigurationSection("redstone-spawning");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class LapisSpawner extends BukkitRunnable {
         var block = loc.getBlock();
 
         if(block.getType() == Material.STONE) {
-            loc.getBlock().setType(Material.LAPIS_ORE);
+            loc.getBlock().setType(Material.REDSTONE_ORE);
         }
     }
 }
