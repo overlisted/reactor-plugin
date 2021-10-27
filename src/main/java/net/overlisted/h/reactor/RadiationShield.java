@@ -89,6 +89,8 @@ public class RadiationShield extends BukkitRunnable implements Listener {
     public void decay() {
         // this is really smart i love being smart
 
+        var center_x = this.config.getInt("center_x");
+        var center_z = this.config.getInt("center_z");
         var side = this.config.getInt("side-length");
         var neg = this.random.nextBoolean();
         var halfSide = side / 2;
@@ -99,7 +101,7 @@ public class RadiationShield extends BukkitRunnable implements Listener {
         var sidePos = this.random.nextInt(side + 1) - side / 2;
         var axis = this.random.nextInt(3); // 0 = x, 1 = z, 2 = ceiling
 
-        var x = switch(axis) {
+        var x = center_x + switch(axis) {
             case 0 -> sidePos;
             case 1 -> halfSide;
             case 2 -> this.random.nextInt(side) - side / 2;
@@ -110,7 +112,7 @@ public class RadiationShield extends BukkitRunnable implements Listener {
             case 2 -> maxY;
             default -> throw new RuntimeException("how");
         };
-        var z = switch(axis) {
+        var z = center_z + switch(axis) {
             case 0 -> halfSide;
             case 1 -> sidePos;
             case 2 -> this.random.nextInt(side) - side / 2;
@@ -177,13 +179,15 @@ public class RadiationShield extends BukkitRunnable implements Listener {
     }
 
     private boolean isBlockIn(Location loc) {
+        var center_x = this.config.getInt("center_x");
+        var center_z = this.config.getInt("center_z");
         var halfSide = this.config.getInt("side-length") / 2;
         var minY = this.config.getInt("min-y");
         var maxY = this.config.getInt("max-y");
 
-        var x = loc.getBlockX();
+        var x = loc.getBlockX() - center_x;
         var y = loc.getBlockY();
-        var z = loc.getBlockZ();
+        var z = loc.getBlockZ() - center_z;
         var wall = y >= minY && y < maxY && (Math.abs(x) == halfSide || Math.abs(z) == halfSide);
         var ceiling = y == maxY && Math.abs(x) <= halfSide && Math.abs(z) <= halfSide;
 

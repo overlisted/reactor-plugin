@@ -18,15 +18,17 @@ public class LapisSpawner extends BukkitRunnable {
 
     @Override
     public void run() {
+        var center_x = this.config.getInt("center_x");
+        var center_z = this.config.getInt("center_z");
         var radius = this.config.getInt("radius");
         var minY = this.config.getInt("min-y");
         var maxY = this.config.getInt("max-y");
 
         var loc = new Location(
                 ReactorPlugin.INSTANCE.overworld,
-                (double) random.nextInt(radius) - radius * 2,
+                (double) center_x + random.nextInt(radius) - radius * 2,
                 (double) random.nextInt(maxY - minY) + minY,
-                (double) random.nextInt(radius) - radius * 2
+                (double) center_z + random.nextInt(radius) - radius * 2
         );
 
         var block = loc.getBlock();
