@@ -51,6 +51,7 @@ public final class ReactorPlugin extends JavaPlugin {
         this.reactor = new Reactor();
 
         server.getPluginManager().registerEvents(this.radiationShield, this);
+        server.getPluginManager().registerEvents(this.reactor, this);
 
         var config = this.getConfig();
 

@@ -58,4 +58,17 @@ public class ReactorMaterial {
 
         this.scoreboardScore.setScore(this.value);
     }
+
+    public void onBlockPlace(BlockPlaceEvent event) {
+        var loc = event.getBlock().getLocation();
+
+        if(event.getBlock().getType() == Material.HOPPER) {
+            if(loc.getBlockX() == this.config.getInt("hopper.x")
+                    && loc.getBlockY() == this.config.getInt("hopper.y")
+                    && loc.getBlockZ() == this.config.getInt("hopper.z")
+            ) {
+                this.hopper = (Hopper) event.getBlock().getState();
+            }
+        }
+    }
 }

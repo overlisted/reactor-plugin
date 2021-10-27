@@ -5,10 +5,11 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Reactor extends BukkitRunnable {
+public class Reactor extends BukkitRunnable implements Listener {
     private final ConfigurationSection config;
     private final ReactorMaterial[] materials;
 
@@ -72,6 +73,13 @@ public class Reactor extends BukkitRunnable {
             for(ReactorMaterial material: this.materials) {
                 material.run();
             }
+        }
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        for(ReactorMaterial material: this.materials) {
+            material.onBlockPlace(event);
         }
     }
 }
