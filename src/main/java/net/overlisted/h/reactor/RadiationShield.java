@@ -134,7 +134,7 @@ public class RadiationShield extends BukkitRunnable implements Listener {
         var frac = (double) this.integrity / (double) this.fullIntegrity;
 
         if(this.integrity == 0) {
-            var poison = new PotionEffect(PotionEffectType.POISON, 2, 1);
+            var poison = new PotionEffect(PotionEffectType.POISON, 200, 2);
 
             ReactorPlugin.INSTANCE
                     .getServer()
@@ -150,7 +150,7 @@ public class RadiationShield extends BukkitRunnable implements Listener {
                     .getOnlinePlayers()
                     .forEach(it -> it.spigot().sendMessage(ChatMessageType.ACTION_BAR, component));
         } else if(frac < 0.5) {
-            var poison = new PotionEffect(PotionEffectType.POISON, 2, 2);
+            var poison = new PotionEffect(PotionEffectType.POISON, 200, 1);
 
             ReactorPlugin.INSTANCE
                     .getServer()
