@@ -5,11 +5,11 @@ api-version: 1.16
 authors: [overlisted]
 commands:
   reactor:
-    description: Turn on the reactor
+    description: Toggle the reactor on/off
     usage: /reactor
     permission: reactor.control
   shield:
-    description: Turn on the decay of the radiation shield
+    description: Toggle the decay of the radiation shield
     usage: /shield
     permission: reactor.control
   makeshield:

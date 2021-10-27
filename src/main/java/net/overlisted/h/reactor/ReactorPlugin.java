@@ -70,13 +70,13 @@ public final class ReactorPlugin extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch(command.getName()) {
             case "reactor":
-                this.reactor.consumeResources = true;
-                sender.sendMessage("Turned on the reactor!");
+                this.reactor.consumeResources = !this.reactor.consumeResources;
+                sender.sendMessage("Toggled the reactor!");
 
                 break;
             case "shield":
-                this.radiationShield.decay = true;
-                sender.sendMessage("Turned on the decay of the radiation shield!");
+                this.radiationShield.decay = !this.radiationShield.decay;
+                sender.sendMessage("Toggled the decay of the radiation shield!");
 
                 break;
             case "makeshield":
