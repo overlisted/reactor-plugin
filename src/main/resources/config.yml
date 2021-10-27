@@ -4,17 +4,20 @@ shield:
   min-y: 70
   max-y: 200
 reactor:
-  hopper:
-    x: 0
-    y: 70
-    z: 0
-
-  initial-fuel: 100
-  initial-coolant: 100
-
-  # per second
-  fuel-consumption: 1
-  coolant-consumption: 1
+  fuel:
+    hopper:
+      x: 1
+      y: 70
+      z: 0
+    consumption: 1
+    initial: 100
+  coolant:
+    hopper:
+      x: -1
+      y: 70
+      z: 0
+    consumption: 1
+    initial: 100
 
   tnt:
     fill-min:

@@ -2,52 +2,24 @@ package net.overlisted.h.reactor;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Hopper;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Score;
 
 public class Reactor extends BukkitRunnable {
     private final ConfigurationSection config;
-
-    Hopper hopper;
-    int fuel;
-    int coolant;
-    Score fuelEntry = ReactorPlugin.INSTANCE.scoreboard.getScore("Fuel");
-    Score coolantEntry = ReactorPlugin.INSTANCE.scoreboard.getScore("Coolant");
+    private final ReactorMaterial[] materials;
 
     public boolean consumeResources = false;
 
     public Reactor() {
         this.config = ReactorPlugin.INSTANCE.getConfig().getConfigurationSection("reactor");
-
-        var hopper_pos = config.getConfigurationSection("hopper");
-        var block = ReactorPlugin.INSTANCE.overworld.getBlockAt(
-                hopper_pos.getInt("x"),
-                hopper_pos.getInt("y"),
-                hopper_pos.getInt("z")
-        );
-
-        if(!(block.getState() instanceof Hopper)) {
-            block.setType(Material.HOPPER);
-
-            var coords = "(" + hopper_pos.getInt("x") + ", " + hopper_pos.getInt("y") + ", " + hopper_pos.getInt("z") + ")";
-            ReactorPlugin.INSTANCE.getLogger().warning("Changed the block at " + coords + " to a hopper");
-        }
-
-        this.hopper = (Hopper) block.getState();
-
-        this.fuel = config.getInt("initial-fuel");
-        this.coolant = config.getInt("initial-coolant");
-
-        this.updateEntries();
-    }
-
-    private void updateEntries() {
-        this.fuelEntry.setScore(this.fuel);
-        this.coolantEntry.setScore(this.coolant);
+        this.materials = new ReactorMaterial[] {
+                new ReactorMaterial("Fuel", Material.REDSTONE, config.getConfigurationSection("fuel")),
+                new ReactorMaterial("Coolant", Material.QUARTZ, config.getConfigurationSection("coolant"))
+        };
     }
 
     public void explode() {
@@ -96,33 +68,10 @@ public class Reactor extends BukkitRunnable {
 
     @Override
     public void run() {
-        var inv = this.hopper.getInventory();
-
-        for(ItemStack stack: inv.getContents()) {
-            if(stack == null) {
-                continue;
-            }
-
-            if (stack.getType() == Material.QUARTZ) {
-                this.fuel += stack.getAmount();
-            }
-
-            if (stack.getType() == Material.LAPIS_LAZULI) {
-                this.coolant += stack.getAmount();
-            }
-        }
-
-        inv.removeItem(new ItemStack(Material.LAPIS_LAZULI, 64), new ItemStack(Material.QUARTZ, 64));
-
         if(this.consumeResources) {
-            this.fuel -= this.config.getInt("fuel-consumption");
-            this.coolant -= this.config.getInt("coolant-consumption");
-
-            if(this.fuel <= 0 || this.coolant <= 0) {
-                this.explode();
+            for(ReactorMaterial material: this.materials) {
+                material.run();
             }
         }
-
-        this.updateEntries();
     }
 }
