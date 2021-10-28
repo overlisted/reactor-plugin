@@ -12,7 +12,7 @@ public class ReactorMaterial {
     private int value;
     private final Material material;
     private Hopper hopper;
-    private Score scoreboardScore;
+    private final Score scoreboardScore;
 
     public ReactorMaterial(String displayName, Material material, ConfigurationSection config) {
         this.config = config;
