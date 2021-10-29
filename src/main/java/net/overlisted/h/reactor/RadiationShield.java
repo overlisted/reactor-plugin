@@ -54,8 +54,8 @@ public class RadiationShield extends BukkitRunnable implements Listener {
         var halfSideLen = this.config.getInt("side-length") / 2;
         var minY = this.config.getInt("min-y");
         var maxY = this.config.getInt("max-y");
-        var center_x = this.config.getInt("center_x");
-        var center_z = this.config.getInt("center_z");
+        var center_x = this.config.getInt("center.x");
+        var center_z = this.config.getInt("center.z");
 
         for(int side = 0; side < 4; side++) {
             for(int sidePos = -halfSideLen; sidePos <= halfSideLen; sidePos++) {
@@ -80,7 +80,7 @@ public class RadiationShield extends BukkitRunnable implements Listener {
 
         for(int x = -halfSideLen; x <= halfSideLen; x++) {
             for(int z = -halfSideLen; z <= halfSideLen; z++) {
-                world.getBlockAt(x, maxY, z).setType(material);
+                world.getBlockAt(center_x + x, maxY, center_z + z).setType(material);
             }
         }
 
@@ -91,8 +91,8 @@ public class RadiationShield extends BukkitRunnable implements Listener {
     public void decay() {
         // this is really smart i love being smart
 
-        var center_x = this.config.getInt("center_x");
-        var center_z = this.config.getInt("center_z");
+        var center_x = this.config.getInt("center.x");
+        var center_z = this.config.getInt("center.z");
         var side = this.config.getInt("side-length");
         var neg = this.random.nextBoolean();
         var halfSide = side / 2;
@@ -181,8 +181,8 @@ public class RadiationShield extends BukkitRunnable implements Listener {
     }
 
     private boolean isBlockIn(Location loc) {
-        var center_x = this.config.getInt("center_x");
-        var center_z = this.config.getInt("center_z");
+        var center_x = this.config.getInt("center.x");
+        var center_z = this.config.getInt("center.z");
         var halfSide = this.config.getInt("side-length") / 2;
         var minY = this.config.getInt("min-y");
         var maxY = this.config.getInt("max-y");

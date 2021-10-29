@@ -26,9 +26,9 @@ public class RedstoneSpawner extends BukkitRunnable {
 
         var loc = new Location(
                 ReactorPlugin.INSTANCE.overworld,
-                (double) center_x + random.nextInt(radius) - radius * 2,
+                (double) center_x + (random.nextInt(radius * 2) - radius),
                 (double) random.nextInt(maxY - minY) + minY,
-                (double) center_z + random.nextInt(radius) - radius * 2
+                (double) center_z + (random.nextInt(radius * 2) - radius)
         );
 
         var block = loc.getBlock();
