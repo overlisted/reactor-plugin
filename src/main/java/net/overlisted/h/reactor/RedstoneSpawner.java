@@ -18,8 +18,8 @@ public class RedstoneSpawner extends BukkitRunnable {
 
     @Override
     public void run() {
-        var center_x = this.config.getInt("center_x");
-        var center_z = this.config.getInt("center_z");
+        var center_x = this.config.getInt("center.x");
+        var center_z = this.config.getInt("center.z");
         var radius = this.config.getInt("radius");
         var minY = this.config.getInt("min-y");
         var maxY = this.config.getInt("max-y");
