@@ -1,5 +1,6 @@
 package net.overlisted.h.reactor;
 
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.block.Hopper;
 import org.bukkit.configuration.ConfigurationSection;
@@ -8,11 +9,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Score;
 
 public class ReactorMaterial {
+    private static final long WARNING_DELAY = 20000;
     private final ConfigurationSection config;
     private int value;
     private final Material material;
     private Hopper hopper;
     private final Score scoreboardScore;
+    private final String name;
+    private long lastWarningTime = 0;
 
     public ReactorMaterial(String displayName, Material material, ConfigurationSection config) {
         this.config = config;
@@ -37,9 +41,38 @@ public class ReactorMaterial {
 
         this.scoreboardScore = ReactorPlugin.INSTANCE.scoreboard.getScore(displayName);
         this.scoreboardScore.setScore(this.value);
+
+        this.name = displayName.toLowerCase();
     }
 
-    public void run() {
+    private void updateValue(int delta) {
+        var warn_min = this.config.getInt("warning.min");
+        var warn_max = this.config.getInt("warning.max");
+
+        var newValue = this.value + delta;
+
+        String warning = null;
+
+        if(newValue < warn_min) {
+            warning = "\u00A7e\u00A7lWarning: You are adding too little ";
+        } else if(newValue > warn_max) {
+            warning = "\u00A7e\u00A7lWarning: You are adding too much ";
+        }
+
+        var now = System.currentTimeMillis();
+
+        if(warning != null && this.lastWarningTime + WARNING_DELAY < now) {
+            this.lastWarningTime = now;
+            ReactorPlugin.INSTANCE.getServer().spigot().broadcast(TextComponent.fromLegacyText(warning + this.name));
+        }
+
+        this.value = newValue;
+    }
+
+    /**
+     * @return if reactor should explode
+     */
+    public boolean run() {
         var inv = this.hopper.getInventory();
 
         for(ItemStack stack: inv.getContents()) {
@@ -48,15 +81,16 @@ public class ReactorMaterial {
             }
 
             if (stack.getType() == this.material) {
-                this.value += stack.getAmount();
+                this.updateValue(stack.getAmount());
             }
         }
 
         inv.removeItem(new ItemStack(this.material, 64));
 
-        this.value -= this.config.getInt("consumption");
-
+        this.updateValue(-this.config.getInt("consumption"));
         this.scoreboardScore.setScore(this.value);
+
+        return this.value < this.config.getInt("meltdown.min") || this.value > this.config.getInt("meltdown.max");
     }
 
     public void onBlockPlace(BlockPlaceEvent event) {

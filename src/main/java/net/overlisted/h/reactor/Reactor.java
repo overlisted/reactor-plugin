@@ -71,7 +71,9 @@ public class Reactor extends BukkitRunnable implements Listener {
     public void run() {
         if(this.consumeResources) {
             for(ReactorMaterial material: this.materials) {
-                material.run();
+                if(material.run()) {
+                    this.explode();
+                }
             }
         }
     }

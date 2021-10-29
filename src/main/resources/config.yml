@@ -13,14 +13,26 @@ reactor:
       y: 70
       z: 0
     consumption: 1
-    initial: 100
+    initial: 200
+    warning:
+      min: 100
+      max: 300
+    meltdown:
+      min: 50
+      max: 400
   coolant:
     hopper:
       x: -1
       y: 70
       z: 0
     consumption: 1
-    initial: 100
+    initial: 1000
+    warning:
+      min: 500
+      max: 1500
+    meltdown:
+      min: 250
+      max: 1750
 
   tnt:
     fill-min:
