@@ -18,8 +18,8 @@ public class Reactor extends BukkitRunnable implements Listener {
     public Reactor() {
         this.config = ReactorPlugin.INSTANCE.getConfig().getConfigurationSection("reactor");
         this.resources = new ReactorResource[] {
-                new ReactorResource("Fuel", Material.REDSTONE, config.getConfigurationSection("fuel")),
-                new ReactorResource("Coolant", Material.QUARTZ, config.getConfigurationSection("coolant"))
+                new ReactorResource("Fuel", Material.QUARTZ, config.getConfigurationSection("fuel")),
+                new ReactorResource("Coolant", Material.REDSTONE, config.getConfigurationSection("coolant"))
         };
     }
 
