@@ -11,15 +11,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Reactor extends BukkitRunnable implements Listener {
     private final ConfigurationSection config;
-    private final ReactorMaterial[] materials;
+    private final ReactorResource[] resources;
 
     public boolean consumeResources = false;
 
     public Reactor() {
         this.config = ReactorPlugin.INSTANCE.getConfig().getConfigurationSection("reactor");
-        this.materials = new ReactorMaterial[] {
-                new ReactorMaterial("Fuel", Material.REDSTONE, config.getConfigurationSection("fuel")),
-                new ReactorMaterial("Coolant", Material.QUARTZ, config.getConfigurationSection("coolant"))
+        this.resources = new ReactorResource[] {
+                new ReactorResource("Fuel", Material.REDSTONE, config.getConfigurationSection("fuel")),
+                new ReactorResource("Coolant", Material.QUARTZ, config.getConfigurationSection("coolant"))
         };
     }
 
@@ -70,8 +70,8 @@ public class Reactor extends BukkitRunnable implements Listener {
     @Override
     public void run() {
         if(this.consumeResources) {
-            for(ReactorMaterial material: this.materials) {
-                if(material.run()) {
+            for(ReactorResource resource: this.resources) {
+                if(resource.run()) {
                     this.explode();
                 }
             }
@@ -80,8 +80,8 @@ public class Reactor extends BukkitRunnable implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        for(ReactorMaterial material: this.materials) {
-            material.onBlockPlace(event);
+        for(ReactorResource resource: this.resources) {
+            resource.onBlockPlace(event);
         }
     }
 }

@@ -8,7 +8,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Score;
 
-public class ReactorMaterial {
+public class ReactorResource {
     private static final long WARNING_DELAY = 20000;
     private final ConfigurationSection config;
     private int value;
@@ -18,7 +18,7 @@ public class ReactorMaterial {
     private final String name;
     private long lastWarningTime = 0;
 
-    public ReactorMaterial(String displayName, Material material, ConfigurationSection config) {
+    public ReactorResource(String displayName, Material material, ConfigurationSection config) {
         this.config = config;
         this.value = config.getInt("initial");
         this.material = material;
