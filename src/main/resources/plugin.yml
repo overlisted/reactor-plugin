@@ -12,6 +12,10 @@ commands:
     description: Toggle the decay of the radiation shield
     usage: /shield
     permission: reactor.control
+  redstone:
+    description: Toggle the spawning of redstone on/off
+    usage: /togglers
+    permission: reactor.control
   makeshield:
     description: Rebuild the radiation shield
     usage: /makeshield <block type>

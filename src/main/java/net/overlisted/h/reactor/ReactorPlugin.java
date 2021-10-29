@@ -80,6 +80,11 @@ public final class ReactorPlugin extends JavaPlugin {
                 sender.sendMessage("Toggled the decay of the radiation shield!");
 
                 break;
+            case "redstone":
+                this.redstoneSpawner.enabled = !this.redstoneSpawner.enabled;
+                sender.sendMessage("Toggled the spawning of redstone!");
+
+                break;
             case "makeshield":
                 if(args.length != 1) {
                     return false;

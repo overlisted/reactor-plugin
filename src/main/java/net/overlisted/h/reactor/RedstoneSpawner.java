@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class RedstoneSpawner extends BukkitRunnable {
     private final ConfigurationSection config;
+    public boolean enabled = true;
 
     Random random = new Random();
 
@@ -18,6 +19,8 @@ public class RedstoneSpawner extends BukkitRunnable {
 
     @Override
     public void run() {
+        if(!this.enabled) return;
+
         var center_x = this.config.getInt("center.x");
         var center_z = this.config.getInt("center.z");
         var radius = this.config.getInt("radius");
