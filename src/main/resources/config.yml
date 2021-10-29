@@ -1,8 +1,8 @@
 shield:
   decay-interval: 1
   center:
-    x: 0,
-    z: 0,
+    x: 0
+    z: 0
   side-length: 100
   min-y: 70
   max-y: 200
@@ -50,8 +50,8 @@ reactor:
 redstone-spawning:
   interval: 20
   center:
-    x: 0,
-    z: 0,
+    x: 0
+    z: 0
   radius: 50
   min-y: 5
   max-y: 30
