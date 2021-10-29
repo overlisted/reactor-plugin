@@ -54,17 +54,19 @@ public class RadiationShield extends BukkitRunnable implements Listener {
         var halfSideLen = this.config.getInt("side-length") / 2;
         var minY = this.config.getInt("min-y");
         var maxY = this.config.getInt("max-y");
+        var center_x = this.config.getInt("center_x");
+        var center_z = this.config.getInt("center_z");
 
         for(int side = 0; side < 4; side++) {
             for(int sidePos = -halfSideLen; sidePos <= halfSideLen; sidePos++) {
                 for(int y = minY; y < maxY; y++) {
-                    var x = switch(side) {
+                    var x = center_x + switch(side) {
                         case 0, 1 -> sidePos;
                         case 2 -> halfSideLen;
                         case 3 -> -halfSideLen;
                         default -> throw new RuntimeException("how");
                     };
-                    var z = switch(side) {
+                    var z = center_z + switch(side) {
                         case 0 -> halfSideLen;
                         case 1 -> -halfSideLen;
                         case 2, 3 -> sidePos;
