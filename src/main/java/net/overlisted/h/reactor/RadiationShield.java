@@ -1,7 +1,7 @@
 package net.overlisted.h.reactor;
 
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,6 +9,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -39,14 +40,12 @@ public class RadiationShield extends BukkitRunnable implements Listener {
         var minY = this.config.getInt("min-y");
         var maxY = this.config.getInt("max-y");
         this.fullIntegrity = (sideLength - 1) * 4 * (maxY - minY) + (sideLength - 2) * (sideLength - 2);
-        this.integrity = this.fullIntegrity;
         this.integrityBar = server.createBossBar(
                 "Radiation Shield",
                 BarColor.WHITE,
                 BarStyle.SEGMENTED_10
         );
-
-        this.updateIntegrity();
+        this.updateIntegrity(this.fullIntegrity);
     }
 
     public void rebuild(Material material) {
@@ -84,8 +83,14 @@ public class RadiationShield extends BukkitRunnable implements Listener {
             }
         }
 
-        this.integrity = this.fullIntegrity;
-        this.updateIntegrity();
+        this.updateIntegrity(this.fullIntegrity);
+    }
+
+    private void updateIntegrity(int newValue) {
+        var newFrac = (double) newValue / (double) this.fullIntegrity;
+
+        this.integrityBar.setProgress(newFrac);
+        this.integrity = newValue;
     }
 
     public void decay() {
@@ -125,9 +130,7 @@ public class RadiationShield extends BukkitRunnable implements Listener {
 
         if(!block.isEmpty()) {
             block.setType(Material.AIR);
-            this.integrity--;
-
-            this.updateIntegrity();
+            updateIntegrity(this.integrity - 1);
         }
     }
 
@@ -135,49 +138,30 @@ public class RadiationShield extends BukkitRunnable implements Listener {
     public void run() {
         var frac = (double) this.integrity / (double) this.fullIntegrity;
 
+        PotionEffect effect = null;
+        BaseComponent[] component = null;
+
         if(this.integrity == 0) {
-            var poison = new PotionEffect(PotionEffectType.POISON, 200, 2);
-
-            ReactorPlugin.INSTANCE
-                    .getServer()
-                    .getOnlinePlayers()
-                    .forEach(it -> it.addPotionEffect(poison));
-
-            var component = TextComponent.fromLegacyText(
-                    "\u00A74Nothing is protecting you from radiation"
-            );
-
-            ReactorPlugin.INSTANCE
-                    .getServer()
-                    .getOnlinePlayers()
-                    .forEach(it -> it.spigot().sendMessage(ChatMessageType.ACTION_BAR, component));
+            effect = new PotionEffect(PotionEffectType.POISON, 200, 2);
+            component = TextComponent.fromLegacyText("\u00A74Nothing is protecting you from radiation");
         } else if(frac < 0.5) {
-            var poison = new PotionEffect(PotionEffectType.POISON, 200, 1);
+            effect = new PotionEffect(PotionEffectType.POISON, 200, 1);
+            component = TextComponent.fromLegacyText("\u00A7eThe radiation shield is getting very weak");
+        }
 
-            ReactorPlugin.INSTANCE
-                    .getServer()
-                    .getOnlinePlayers()
-                    .forEach(it -> it.addPotionEffect(poison));
+        for(Player player: ReactorPlugin.INSTANCE.getServer().getOnlinePlayers()) {
+            if(effect != null) {
+                if(player.getActivePotionEffects().stream().noneMatch(it -> it.getType().equals(PotionEffectType.POISON))) {
+                    player.addPotionEffect(effect);
+                }
+            }
 
-            var component = TextComponent.fromLegacyText(
-                    "\u00A7eThe radiation shield is getting very weak"
-            );
-
-            ReactorPlugin.INSTANCE
-                    .getServer()
-                    .getOnlinePlayers()
-                    .forEach(it -> it.spigot().sendMessage(ChatMessageType.ACTION_BAR, component));
+            if(component != null) player.spigot().sendMessage(ChatMessageType.ACTION_BAR, component);
         }
 
         if(this.decay) {
             this.decay();
         }
-    }
-
-    private void updateIntegrity() {
-        var frac = (double) this.integrity / (double) this.fullIntegrity;
-
-        this.integrityBar.setProgress(frac);
     }
 
     private boolean isBlockIn(Location loc) {
@@ -199,16 +183,14 @@ public class RadiationShield extends BukkitRunnable implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         if(this.isBlockIn(event.getBlock().getLocation())) {
-            this.integrity++;
-            this.updateIntegrity();
+            this.updateIntegrity(this.integrity + 1);
         }
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if(this.isBlockIn(event.getBlock().getLocation())) {
-            this.integrity--;
-            this.updateIntegrity();
+            this.updateIntegrity(this.integrity - 1);
         }
     }
 
