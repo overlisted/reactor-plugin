@@ -2,6 +2,7 @@ package net.overlisted.h.reactor;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.boss.BarColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -37,6 +38,13 @@ public class Reactor implements Listener {
                         200,
                         10
                 ));
+
+        new TimerBossBar(
+                server.getOnlinePlayers(),
+                3600,
+                "Evacuation",
+                BarColor.YELLOW
+        );
 
         var task = new BukkitRunnable() {
             @Override
