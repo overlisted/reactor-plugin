@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Reactor extends BukkitRunnable implements Listener {
+public class Reactor implements Listener {
     private final ConfigurationSection config;
     private final ReactorResource[] resources;
 
@@ -18,8 +18,8 @@ public class Reactor extends BukkitRunnable implements Listener {
     public Reactor() {
         this.config = ReactorPlugin.INSTANCE.getConfig().getConfigurationSection("reactor");
         this.resources = new ReactorResource[] {
-                new ReactorResource("Fuel", Material.QUARTZ, config.getConfigurationSection("fuel")),
-                new ReactorResource("Coolant", Material.REDSTONE, config.getConfigurationSection("coolant"))
+                new ReactorResource(this, "Fuel", Material.QUARTZ, config.getConfigurationSection("fuel")),
+                new ReactorResource(this, "Coolant", Material.REDSTONE, config.getConfigurationSection("coolant"))
         };
     }
 
@@ -67,14 +67,9 @@ public class Reactor extends BukkitRunnable implements Listener {
         task.runTaskLater(ReactorPlugin.INSTANCE, 1200);
     }
 
-    @Override
-    public void run() {
-        if(this.consumeResources) {
-            for(ReactorResource resource: this.resources) {
-                if(resource.run()) {
-                    this.explode();
-                }
-            }
+    public void cancelRunnables() {
+        for(ReactorResource resource: this.resources) {
+            resource.cancel();
         }
     }
 

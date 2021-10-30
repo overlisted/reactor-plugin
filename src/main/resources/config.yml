@@ -13,6 +13,7 @@ reactor:
       y: 70
       z: 0
     consumption: 1
+    interval: 20
     initial: 200
     warning:
       min: 100
@@ -26,6 +27,7 @@ reactor:
       y: 70
       z: 0
     consumption: 1
+    interval: 20
     initial: 1000
     warning:
       min: 500

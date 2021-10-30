@@ -6,9 +6,10 @@ import org.bukkit.block.Hopper;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Score;
 
-public class ReactorResource {
+public class ReactorResource extends BukkitRunnable {
     private static final long WARNING_DELAY = 20000;
     private final ConfigurationSection config;
     private int value;
@@ -17,8 +18,9 @@ public class ReactorResource {
     private final Score scoreboardScore;
     private final String name;
     private long lastWarningTime = 0;
+    private Reactor reactor;
 
-    public ReactorResource(String displayName, Material material, ConfigurationSection config) {
+    public ReactorResource(Reactor reactor, String displayName, Material material, ConfigurationSection config) {
         this.config = config;
         this.value = config.getInt("initial");
         this.material = material;
@@ -43,6 +45,9 @@ public class ReactorResource {
         this.scoreboardScore.setScore(this.value);
 
         this.name = displayName.toLowerCase();
+        this.reactor = reactor;
+
+        this.runTaskTimer(ReactorPlugin.INSTANCE, 0, this.config.getInt("interval"));
     }
 
     private void updateValue(int delta) {
@@ -69,10 +74,8 @@ public class ReactorResource {
         this.value = newValue;
     }
 
-    /**
-     * @return if reactor should explode
-     */
-    public boolean run() {
+    @Override
+    public void run() {
         var inv = this.hopper.getInventory();
 
         for(ItemStack stack: inv.getContents()) {
@@ -87,10 +90,13 @@ public class ReactorResource {
 
         inv.removeItem(new ItemStack(this.material, 64));
 
-        this.updateValue(-this.config.getInt("consumption"));
+        if(this.reactor.consumeResources) this.updateValue(-this.config.getInt("consumption"));
+
         this.scoreboardScore.setScore(this.value);
 
-        return this.value < this.config.getInt("meltdown.min") || this.value > this.config.getInt("meltdown.max");
+        if(this.value < this.config.getInt("meltdown.min") || this.value > this.config.getInt("meltdown.max")) {
+            this.reactor.explode();
+        }
     }
 
     public void onBlockPlace(BlockPlaceEvent event) {

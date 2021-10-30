@@ -57,14 +57,13 @@ public final class ReactorPlugin extends JavaPlugin {
 
         this.redstoneSpawner.runTaskTimer(this, 0, config.getInt("lapis-spawning.interval"));
         this.radiationShield.runTaskTimer(this, 0, config.getInt("shield.decay-interval"));
-        this.reactor.runTaskTimer(this, 0, 20);
     }
 
     @Override
     public void onDisable() {
         this.redstoneSpawner.cancel();
         this.radiationShield.cancel();
-        this.reactor.cancel();
+        this.reactor.cancelRunnables();
     }
 
     @Override
