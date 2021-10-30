@@ -142,10 +142,10 @@ public class RadiationShield extends BukkitRunnable implements Listener {
         BaseComponent[] component = null;
 
         if(this.integrity == 0) {
-            effect = new PotionEffect(PotionEffectType.POISON, 200, 2);
+            effect = new PotionEffect(PotionEffectType.POISON, 200, 1);
             component = TextComponent.fromLegacyText("\u00A74Nothing is protecting you from radiation");
         } else if(frac < 0.5) {
-            effect = new PotionEffect(PotionEffectType.POISON, 200, 1);
+            effect = new PotionEffect(PotionEffectType.POISON, 200, 0);
             component = TextComponent.fromLegacyText("\u00A7eThe radiation shield is getting very weak");
         }
 
