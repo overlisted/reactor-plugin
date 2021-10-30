@@ -31,10 +31,10 @@ public class Reactor implements Listener {
         server
                 .getOnlinePlayers()
                 .forEach(it -> it.sendTitle(
-                        "Reactor is about to explode!",
-                        "You have 1 minute to evacuate",
+                        "\u00A74NUCLEAR MELTDOWN",
+                        "You have \u00A7b3 minutes\u00A7r to evacuate",
                         10,
-                        1180,
+                        200,
                         10
                 ));
 
@@ -64,7 +64,7 @@ public class Reactor implements Listener {
             }
         };
 
-        task.runTaskLater(ReactorPlugin.INSTANCE, 1200);
+        task.runTaskLater(ReactorPlugin.INSTANCE, 3600);
     }
 
     public void cancelRunnables() {
