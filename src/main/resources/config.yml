@@ -57,3 +57,17 @@ redstone-spawning:
   radius: 50
   min-y: 5
   max-y: 30
+safezone:
+  low-pos: # All blocks on this position must have a lower value than the correlated <high-pos> values.
+    x: 59
+    y: 84
+    z: 118
+  high-pos: # All blocks on this position must have a higher value than the correlated <low-pos> values.
+    x: 62
+    y: 89
+    z: 121
+meltdown:
+  contamination-rate: 20 # Delay in ticks for when <contamination-amt> blocks are changed to netherrack.
+  contamination-amt: 20 # How many blocks are turned to netherrack every <contamination-rate> seconds.
+  explosion-rate: 10 # Delay in ticks for when <explosion-amt> blocks will explode.
+  explosion-amount: 100 # How many blocks explode every <explosion-rate> seconds.
