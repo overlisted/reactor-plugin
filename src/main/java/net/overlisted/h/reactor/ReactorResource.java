@@ -90,13 +90,15 @@ public class ReactorResource extends BukkitRunnable {
 
         inv.removeItem(new ItemStack(this.material, 64));
 
-        if(this.reactor.consumeResources) this.updateValue(-this.config.getInt("consumption"));
+        if(this.reactor.consumeResources) {
+            this.updateValue(-this.config.getInt("consumption"));
+
+            if(this.value < this.config.getInt("meltdown.min") || this.value > this.config.getInt("meltdown.max")) {
+                this.reactor.explode();
+            }
+        }
 
         this.scoreboardScore.setScore(this.value);
-
-        if(this.value < this.config.getInt("meltdown.min") || this.value > this.config.getInt("meltdown.max")) {
-            this.reactor.explode();
-        }
     }
 
     public void onBlockPlace(BlockPlaceEvent event) {
