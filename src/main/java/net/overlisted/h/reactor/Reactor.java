@@ -34,6 +34,8 @@ public class Reactor implements Listener {
     private final int explosionRate;
     private final int explosionAmount;
 
+    private final int killRate;
+
     public boolean consumeResources = false;
     private boolean exploding = false;
 
@@ -58,7 +60,8 @@ public class Reactor implements Listener {
         this.contaminationRate = meltdownConfig.getInt("contamination-rate");
         this.contaminationAmount = meltdownConfig.getInt("contamination-amt");
         this.explosionRate = meltdownConfig.getInt("explosion-rate");
-        this.explosionAmount = meltdownConfig.getInt("explosion-amount");
+        this.explosionAmount = meltdownConfig.getInt("explosion-amt");
+        this.killRate = meltdownConfig.getInt("kill-rate");
     }
 
     public void explode() {
@@ -83,12 +86,14 @@ public class Reactor implements Listener {
                         );
                     }
                 } else {
-                    if (player.getHealth() - 2 >= 0) {
-                        player.setHealth(player.getHealth() - 2);
-                    } else player.setHealth(0);
+                    if (player.getGameMode().equals(GameMode.SURVIVAL)) {
+                        if (player.getHealth() - 2 >= 0) {
+                            player.setHealth(player.getHealth() - 2);
+                        } else player.setHealth(0);
+                    }
                 }
             }
-        }, 0, 40);
+        }, 0, killRate);
 
         //Make random blocks turn into netherrack
         //Make random blocks explode
